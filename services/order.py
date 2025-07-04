@@ -10,14 +10,14 @@ from db.models import Order, Ticket
 def create_order(
         tickets: list[dict],
         username: str,
-        date: str=None
+        date: str = None
 ) -> None:
     with transaction.atomic():
         user = get_user_model().objects.get(username=username)
         order = Order.objects.create(user=user)
         if date:
             per_date = datetime.fromisoformat(date)
-            order.created_at=per_date
+            order.created_at = per_date
             order.save()
         for ticket in tickets:
             Ticket.objects.create(
@@ -28,7 +28,7 @@ def create_order(
             )
 
 
-def get_orders(username: str=None) -> QuerySet[Order]:
+def get_orders(username: str = None) -> QuerySet[Order]:
     with transaction.atomic():
         if username:
             return Order.objects.filter(user__username=username)
